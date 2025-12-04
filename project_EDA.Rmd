@@ -63,24 +63,7 @@ thyro4 =
     elapsed_time_days = as.numeric((Visit_Timestamp - min(Visit_Timestamp)))
   ) %>% 
   ungroup() %>% 
-  group_by(Patient_ID) %>% 
-  mutate(
-    elapsed_time_prop = elapsed_time_days / max(elapsed_time_days)
-  ) %>% 
-  ungroup() 
-         
-
-ranking = thyro4 %>% 
-  group_by(Patient_ID) %>% 
-  summarize(
-    ave_visitFreq = max(elapsed_time_days) / max(Visit_Number)
-  ) %>% 
-  mutate(rank_visitFreq = as.factor(ntile(ave_visitFreq, 4))) %>% 
-  ungroup() 
-
-thyro4 = thyro4 %>% 
-  left_join(., y = ranking, by = "Patient_ID", keep = F) %>% 
-  dplyr::select(-c(ave_visitFreq))
+  mutate(ID = as.numeric(factor(Patient_ID)))
 
 
 ```
@@ -138,7 +121,7 @@ thyro4 = thyro4 %>%
     rT3 = Reverse_T3_Index
   )
 
-rm(optLambda_calc, optLamda_tg, ranking, bc1, bc2, m1, m2)
+rm(optLambda_calc, optLamda_tg, bc1, bc2, m1, m2)
 ```
 
 
